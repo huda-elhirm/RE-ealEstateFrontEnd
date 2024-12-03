@@ -2,11 +2,12 @@ pipeline {
     agent any
     tools {
         nodejs 'NodeJs' // Ensure 'NodeJs' is configured in Manage Jenkins -> Global Tool Configuration
+        docker 'Docker'
     }
-    /*environment {
+    environment {
         DOCKER_CREDENTIALS_ID = 'dockerhub-credentials' // Replace with your Jenkins credential ID for Docker Hub
         IMAGE_NAME = 'realestate1234/react-frontend' // Replace with your Docker Hub repository
-    }*/
+    }
     stages {
         stage('Install Dependencies') { 
             steps {
@@ -18,7 +19,7 @@ pipeline {
                 sh 'npm run build' // Build the React app
             }
         }
-       /* stage('Build Docker Image') {
+        stage('Build Docker Image') {
             steps {
                 script {
                     // Define image tag
@@ -40,6 +41,6 @@ pipeline {
                     }
                 }
             }
-        }*/
+        }
     }
 }
