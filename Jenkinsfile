@@ -22,7 +22,7 @@ pipeline {
             steps {
                 script {
                     // Define image tag
-                    def imageTag = "${IMAGE_NAME}:${env.BUILD_NUMBER}"
+                    def imageTag = "${IMAGE_NAME}:latest"
                     // Build the Docker image
                     sh "docker build -t ${imageTag} ."
                 }
