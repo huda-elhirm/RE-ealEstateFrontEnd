@@ -4,7 +4,7 @@ pipeline {
         nodejs 'NodeJs' // Ensure this matches the name in Global Tool Configuration
     }
     environment {
-        DOCKER_CREDENTIALS_ID = 'realestate1234' // Replace with your Docker Hub credentials ID
+        DOCKER_CREDENTIALS_ID = 'dockerhub-credentials' // Replace with your Docker Hub credentials ID
         IMAGE_NAME = 'realestate1234/react-front' // Replace with your Docker Hub username and desired image name
     }
     stages {
