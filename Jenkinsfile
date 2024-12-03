@@ -2,7 +2,7 @@ pipeline {
     agent any
     tools {
         nodejs 'NodeJs' // Ensure 'NodeJs' is configured in Manage Jenkins -> Global Tool Configuration
-        docker 'Docker'
+        //docker 'Docker'
     }
     environment {
         DOCKER_CREDENTIALS_ID = 'dockerhub-credentials' // Replace with your Jenkins credential ID for Docker Hub
