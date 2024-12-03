@@ -2,7 +2,6 @@ pipeline {
     agent any
     tools {
         nodejs 'NodeJs' // Ensure 'NodeJs' is configured in Manage Jenkins -> Global Tool Configuration
-        //docker 'Docker'
     }
     environment {
         DOCKER_CREDENTIALS_ID = 'dockerhub-credentials' // Replace with your Jenkins credential ID for Docker Hub
@@ -24,8 +23,8 @@ pipeline {
                 script {
                     // Define image tag
                     def imageTag = "${IMAGE_NAME}:latest"
-                    // Build the Docker image
-                    sh 'docker build -t ${imageTag} .'
+                    // Build the Docker image with the proper build context (.)
+                    sh "docker build -t ${imageTag} ."
                 }
             }
         }
@@ -34,10 +33,8 @@ pipeline {
                 script {
                     // Push the Docker image to Docker Hub
                     docker.withRegistry('https://index.docker.io/v1/', DOCKER_CREDENTIALS_ID) {
-                        def imageTag = "${IMAGE_NAME}:${env.BUILD_NUMBER}"
-                        sh 'docker push ${imageTag}' // Push versioned tag
-                        sh 'docker tag ${imageTag} ${IMAGE_NAME}:latest' // Tag as latest
-                        sh 'docker push ${IMAGE_NAME}:latest' // Push latest tag
+                        def imageTag = "${IMAGE_NAME}:latest"
+                        sh "docker push ${imageTag}" // Push the latest tag
                     }
                 }
             }
