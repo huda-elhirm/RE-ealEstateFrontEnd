@@ -5,7 +5,7 @@ pipeline {
     }
     environment {
         DOCKER_CREDENTIALS_ID = 'dockerhub-credentials' // Replace with your Jenkins credential ID for Docker Hub
-        IMAGE_NAME = 'realestate1234/react-front' // Replace with your Docker Hub repository
+        IMAGE_NAME = 'realestate1234/react-frontend' // Replace with your Docker Hub repository
     }
     stages {
         stage('Install Dependencies') { 
