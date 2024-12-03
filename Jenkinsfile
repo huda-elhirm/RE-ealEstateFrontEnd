@@ -1,25 +1,30 @@
 pipeline {
     agent any
     tools {
-        nodejs 'NodeJs' // Ensure this matches the name in Global Tool Configuration
+        nodejs 'NodeJs' // Ensure 'NodeJs' is configured in Manage Jenkins -> Global Tool Configuration
     }
     environment {
-        DOCKER_CREDENTIALS_ID = 'dockerhub-credentials' // Replace with your Docker Hub credentials ID
-        IMAGE_NAME = 'realestate1234/react-front' // Replace with your Docker Hub username and desired image name
+        DOCKER_CREDENTIALS_ID = 'dockerhub-credentials' // Replace with your Jenkins credential ID for Docker Hub
+        IMAGE_NAME = 'realestate1234/react-front' // Replace with your Docker Hub repository
     }
     stages {
-        stage('Build') { 
+        stage('Install Dependencies') { 
             steps {
-                sh 'npm install' 
-                sh 'npm run build' // Assuming you have a build script in your package.json
+                sh 'npm install' // Install Node.js dependencies
+            }
+        }
+        stage('Build React App') {
+            steps {
+                sh 'npm run build' // Build the React app
             }
         }
         stage('Build Docker Image') {
             steps {
                 script {
-                    // Build the Docker image
+                    // Define image tag
                     def imageTag = "${IMAGE_NAME}:${env.BUILD_NUMBER}"
-                    docker.build(imageTag)
+                    // Build the Docker image
+                    sh "docker build -t ${imageTag} ."
                 }
             }
         }
@@ -29,7 +34,9 @@ pipeline {
                     // Push the Docker image to Docker Hub
                     docker.withRegistry('https://index.docker.io/v1/', DOCKER_CREDENTIALS_ID) {
                         def imageTag = "${IMAGE_NAME}:${env.BUILD_NUMBER}"
-                        docker.image(imageTag).push('latest') // Push the latest tag
+                        sh "docker push ${imageTag}" // Push versioned tag
+                        sh "docker tag ${imageTag} ${IMAGE_NAME}:latest" // Tag as latest
+                        sh "docker push ${IMAGE_NAME}:latest" // Push latest tag
                     }
                 }
             }
