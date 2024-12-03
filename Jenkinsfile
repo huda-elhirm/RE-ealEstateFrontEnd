@@ -24,7 +24,7 @@ pipeline {
                     // Define image tag
                     def imageTag = "${IMAGE_NAME}:latest"
                     // Build the Docker image
-                    sh "docker build -t ${imageTag} ."
+                    sh 'docker build -t ${imageTag} .'
                 }
             }
         }
@@ -34,9 +34,9 @@ pipeline {
                     // Push the Docker image to Docker Hub
                     docker.withRegistry('https://index.docker.io/v1/', DOCKER_CREDENTIALS_ID) {
                         def imageTag = "${IMAGE_NAME}:${env.BUILD_NUMBER}"
-                        sh "docker push ${imageTag}" // Push versioned tag
-                        sh "docker tag ${imageTag} ${IMAGE_NAME}:latest" // Tag as latest
-                        sh "docker push ${IMAGE_NAME}:latest" // Push latest tag
+                        sh 'docker push ${imageTag}' // Push versioned tag
+                        sh 'docker tag ${imageTag} ${IMAGE_NAME}:latest' // Tag as latest
+                        sh 'docker push ${IMAGE_NAME}:latest' // Push latest tag
                     }
                 }
             }
