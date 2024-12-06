@@ -39,5 +39,21 @@ pipeline {
                 }
             }
         }
+        stage('Deploy to Kubernetes') {
+            steps {
+                script {
+                    withCredentials([file(credentialsId: kube-config, variable: 'KUBECONFIG')]) {
+                        // Set KUBECONFIG environment variable
+                        sh 'export KUBECONFIG=${KUBECONFIG}'
+                        
+                        // Apply the Kubernetes YAML file from the root directory
+                        sh "kubectl apply -f react-frontend-deployment.yml"
+                        
+                        // Verify the deployment rollout
+                        sh "kubectl rollout status deployment/react-front-depl -n default"
+                    }
+                }
+            }
+        }
     }
 }
