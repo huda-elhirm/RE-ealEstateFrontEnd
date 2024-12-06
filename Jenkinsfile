@@ -47,7 +47,7 @@ pipeline {
                         sh 'export KUBECONFIG=${KUBECONFIG}'
                         
                         // Apply the Kubernetes YAML file from the root directory
-                        sh "kubectl apply -f react-frontend-deployment.yml"
+                        sh "kubectl apply -f react-front-depl.yml"
                         
                         // Verify the deployment rollout
                         sh "kubectl rollout status deployment/react-front-depl -n default"
